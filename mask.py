@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt # single use of plt is commented out
 import os.path  
 import PIL.ImageDraw            
 
-def round_corners_one_image(original_image, color, wide):
+def round_corners_one_image(original_image,logo,color, wide):
 	""" Rounds the corner of a PIL.Image
 	
 	original_image must be a PIL.Image
@@ -15,7 +15,9 @@ def round_corners_one_image(original_image, color, wide):
 	width, height = original_image.size
 	border = PIL.Image.new('RGBA', ((width + 2*wide), (height + 2*wide)), (r, g, b))
 	border.paste((original_image), (wide, wide))
+	logo.paste(original_image,(0,0),mask=logo)
 	return border
+	return logo
 
 def get_images(directory=None):
 	""" Returns PIL.Image objects for all the images in directory.
@@ -45,7 +47,7 @@ def get_images(directory=None):
 
 
 
-def round_corners_of_all_images(color, wide, directory=None):
+def round_corners_of_all_images(logo,color, wide, directory=None):
 	""" Saves a modfied version of each image in directory.
 	
 	Uses current directory if no directory is specified. 
@@ -74,7 +76,7 @@ def round_corners_of_all_images(color, wide, directory=None):
 		
 		# Round the corners with default percent of radius
 		curr_image = image_list[n]
-		new_image = round_corners_one_image(curr_image,color,wide) 
+		new_image = round_corners_one_image(curr_image,logo,color,wide) 
 		
 		# Save the altered image, suing PNG to retain transparency
 		new_image_filename = os.path.join(new_directory, filename + '.png')
