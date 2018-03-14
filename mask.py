@@ -4,13 +4,30 @@ import os.path
 import PIL.ImageDraw            
 
 def round_corners_one_image(original_image,logo,color, wide):
+	#BORDER
+	original_image = PIL.Image.open(original_image).convert("RGBA")
 	r,g,b = color
 	width, height = original_image.size
 	border = PIL.Image.new('RGBA', ((width + 2*wide), (height + 2*wide)), (r, g, b))
-	border.paste((original_image), (wide, wide))
-	logo.paste(original_image,(0,0),mask=logo)
-	return border
-	return logo
+	back2 = border
+	fore2 = original_image
+	back2.paste(fore2,(wide,wide))
+	#back2.show()
+	#border.paste((original_image), (wide, wide))
+
+	#LOGO
+	background = back2
+	foreground = PIL.Image.open(logo).convert("RGBA")
+	background.paste(foreground,(0,0),foreground)
+	background.show()
+	
+	#back2 = border
+	#fore2 = test
+	#.paste(background,(0,0),background)
+	#border.show()
+
+	#return border
+	#return logo
 
 def get_images(directory=None):
 	
