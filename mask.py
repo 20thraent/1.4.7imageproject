@@ -1,16 +1,9 @@
 import PIL
-import matplotlib.pyplot as plt # single use of plt is commented out
+import matplotlib.pyplot as plt 
 import os.path  
 import PIL.ImageDraw            
 
 def round_corners_one_image(original_image,logo,color, wide):
-	""" Rounds the corner of a PIL.Image
-	
-	original_image must be a PIL.Image
-	Returns a new PIL.Image with rounded corners, where
-	0 < percent_of_side < 1
-	is the corner radius as a portion of the shorter dimension of original_image
-	"""
 	r,g,b = color
 	width, height = original_image.size
 	border = PIL.Image.new('RGBA', ((width + 2*wide), (height + 2*wide)), (r, g, b))
@@ -20,13 +13,6 @@ def round_corners_one_image(original_image,logo,color, wide):
 	return logo
 
 def get_images(directory=None):
-	""" Returns PIL.Image objects for all the images in directory.
-	
-	If directory is not specified, uses current directory.
-	Returns a 2-tuple containing 
-	a list with a  PIL.Image object for each image file in root_directory, and
-	a list with a string filename for each image file in root_directory
-	"""
 	
 	if directory == None:
 		directory = os.getcwd() # Use working directory if unspecified
