@@ -46,6 +46,10 @@ def get_images(directory=None):
 			image_list += [image]
 		except OSError:
 			pass # do nothing with errors tying to open non-images
+	def filepass(directory):
+		image_list.remove(directory+"\mask.py")
+		image_list.remove(directory+"\Thumbs.db")
+	filepass(directory)
 	return image_list, file_list
 
 
