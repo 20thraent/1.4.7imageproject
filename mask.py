@@ -5,34 +5,22 @@ import PIL.ImageDraw
 
 def round_corners_one_image(original_image,logo,color, wide):
 	#BORDER
-	original_image = PIL.Image.open(original_image).convert("RGBA")
-	r,g,b = color
+	original_image = PIL.Image.open(original_image).convert("RGBA") #open image as PIL object
+	r,g,b = color #border color chosen by user
 	width, height = original_image.size
 	border = PIL.Image.new('RGBA', ((width + 2*wide), (height + 2*wide)), (r, g, b))
 	back2 = border
 	fore2 = original_image
 	back2.paste(fore2,(wide,wide))
-	#back2.show()
-	#border.paste((original_image), (wide, wide))
-
 	#LOGO
 	background = back2
 	foreground = PIL.Image.open(logo).convert("RGBA")
-	sbox = foreground.getbbox()
-	mbox = background.getbbox()
+	sbox = foreground.getbbox() #gets image size with transparency
+	mbox = background.getbbox() #gets image size with transparency 
 	boxx = (mbox[2] - sbox[2]) #background width minus foreground width 
 	boxy = (mbox[3] - sbox[3]) #foreground height minus background height
 
 	background.paste(foreground,(boxx-10,boxy-10),foreground)
-	#background.show()
-	
-	#back2 = border
-	#fore2 = test
-	#.paste(background,(0,0),background)
-	#border.show()
-
-	#return borderb
-	#background.show()
 	return background
 
 def get_images(directory=None):
@@ -53,8 +41,10 @@ def get_images(directory=None):
 		except OSError:
 			pass # do nothing with errors tying to open non-images
 	def filepass(directory):
-		image_list.remove(directory+"\mask.py")
-		image_list.remove(directory+"\Thumbs.db")
+		image_list.remove(directory+"\mask.py") #removes mask python file from image list to avoid error
+		image_list.remove(directory+"\Thumbs.db") #removes file from image list to avoid error
+		if (directory+"\/readme.md") in image_list:
+			image_list.remove(directory+"\/readme.md") #removes file from image list to avoid error
 	filepass(directory)
 	return image_list, file_list
 
