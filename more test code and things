@@ -1,3 +1,0 @@
- watermark = Image.new("RGBA", main.size)
- watermask = watermark.convert("L").point(lambda x: min(x, 100))
- watermark.putalpha(watermask)
