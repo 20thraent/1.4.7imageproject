@@ -18,16 +18,22 @@ def round_corners_one_image(original_image,logo,color, wide):
 	#LOGO
 	background = back2
 	foreground = PIL.Image.open(logo).convert("RGBA")
-	background.paste(foreground,(0,0),foreground)
-	background.show()
+	sbox = foreground.getbbox()
+	mbox = background.getbbox()
+	boxx = (mbox[2] - sbox[2]) #background width minus foreground width 
+	boxy = (mbox[3] - sbox[3]) #foreground height minus background height
+
+	background.paste(foreground,(boxx-10,boxy-10),foreground)
+	#background.show()
 	
 	#back2 = border
 	#fore2 = test
 	#.paste(background,(0,0),background)
 	#border.show()
 
-	#return border
-	#return logo
+	#return borderb
+	#background.show()
+	return background
 
 def get_images(directory=None):
 	
@@ -41,23 +47,27 @@ def get_images(directory=None):
 	for entry in directory_list:
 		absolute_filename = os.path.join(directory, entry)
 		try:
-			image = PIL.Image.open(absolute_filename)
+			image = absolute_filename
 			file_list += [entry]
 			image_list += [image]
-		except IOError:
+		except OSError:
 			pass # do nothing with errors tying to open non-images
+	def filepass(directory):
+		image_list.remove(directory+"\mask.py")
+		image_list.remove(directory+"\Thumbs.db")
+	filepass(directory)
 	return image_list, file_list
 
 
 
-def round_corners_of_all_images(logo,color, wide, directory=None):
+def round_corners_of_all_images(logo,color,wide):
 	""" Saves a modfied version of each image in directory.
 	
 	Uses current directory if no directory is specified. 
 	Places images in subdirectory 'modified', creating it if it does not exist.
 	New image files are of type PNG and have transparent rounded corners.
 	"""
-	
+	directory = None
 	if directory == None:
 		directory = os.getcwd() # Use working directory if unspecified
 		
@@ -79,7 +89,7 @@ def round_corners_of_all_images(logo,color, wide, directory=None):
 		
 		# Round the corners with default percent of radius
 		curr_image = image_list[n]
-		new_image = round_corners_one_image(curr_image,logo,color,wide) 
+		new_image = round_corners_one_image(curr_image,logo,color, wide) 
 		
 		# Save the altered image, suing PNG to retain transparency
 		new_image_filename = os.path.join(new_directory, filename + '.png')
